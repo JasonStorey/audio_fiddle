@@ -4,9 +4,9 @@
 
 angular.module('audioFiddle.controllers', []).
   controller('MyCtrl1', ['$scope', '$timeout', function($scope, $timeout) {
-  	$scope.layout = "keyboard";
+  	$scope.instrument = "keyboard";
   	$timeout(function() {
-  		$scope.layout = "drumkit";
+  		$scope.instrument = "drumkit";
   	}, 500);
   }])
   .controller('MyCtrl2', [function() {

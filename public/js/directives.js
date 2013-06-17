@@ -12,24 +12,29 @@ angular.module('audioFiddle.directives', []).
   .directive('musicalInterface', [function() {
   	return {
       restrict: 'E',
-      replace: true,
-      transclude: false,
-      scope: { layout:'@layout' },
-      template: '<div>' +
-                  '<div class="title">{{layout}}</div>' +
-                  '<div></div>' +
-                '</div>',
+      replace: false, // Angular bug... replace: true breaks $observe on interpolated $attrs
+      transclude: true,
+      scope: { instrument:'@instrument' },
+      templateUrl: 'templates/musical_interface.html',
       link: function($scope, $element, $attrs) {
-      	var LAYOUTS = {
+      	var INSTRUMENTS = {
       				keyboard: {
-      					keys: 127
+      					numOfKeys: 127
       				},
       				drumkit:{
-      					keys: 12
+      					numOfKeys: 12
       				}
       	};
-      	$attrs.$observe('layout', function(val) {
-					console.log(LAYOUTS[val].keys);
+
+      	$attrs.$observe('instrument', function(instrument) {
+      		if(instrument) {
+						console.log(INSTRUMENTS[instrument].numOfKeys);
+						var keysArray = []
+						for(var i=0; i<INSTRUMENTS[instrument].numOfKeys; i++) {
+							keysArray.push('note ' + i);
+						}
+						$scope.keys = keysArray;
+      		}
       	});
       }
     }
