@@ -24,7 +24,7 @@ angular.module('audioFiddle.directives', []).
 						
 						var keysArray = [];
 						
-						for(var i=0; i<instruments[instrument].numOfKeys; i++) {
+						for(var i=0; i < instruments[instrument].numOfKeys; i++) {
 							keysArray.push('note ' + i);
 						}
 						
@@ -35,4 +35,22 @@ angular.module('audioFiddle.directives', []).
 
       }
     }
+  }])
+  .directive('noteTrigger', [function() {
+  	return {
+  		restrict: 'EA',
+  		replace: false,
+  		transclude: false,
+  		link: function($scope, $element, $attrs) {
+
+  			$attrs.$observe('sample', function(sample) {
+  				$scope.sample = sample;
+  			});
+
+  			$scope.playSample = function() {
+  				alert($scope.sample);
+  			};
+
+  		}
+  	}
   }]);
