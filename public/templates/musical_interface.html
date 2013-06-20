@@ -1,6 +1,6 @@
-<div>{{instrument}}</div>
+<div>{{instrumentName}}</div>
 <ul>
 	<li ng-repeat="key in keys">
-		<note-trigger data-sample="{{key}}" ng-click="playSample()">{{key}}</note-trigger>
+		<note-trigger ng-click="playSample(key.sample)">{{key.sample.name || key.number}}</note-trigger>
 	</li>
 </ul>

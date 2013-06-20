@@ -9,7 +9,7 @@ angular.module('audioFiddle.directives', []).
       elm.text(version);
     };
   }])
-  .directive('musicalInterface', ['instruments', function(instruments) {
+  .directive('musicalInterface', ['instruments', function(instrumentsCollection) {
   	return {
       restrict: 'E',
       replace: false, // Angular bug... 'replace: true' breaks $observe on interpolated $attrs
@@ -18,20 +18,34 @@ angular.module('audioFiddle.directives', []).
       templateUrl: 'templates/musical_interface.html',
       link: function($scope, $element, $attrs) {
 
-      	$attrs.$observe('instrument', function(instrument) {
-      		
-      		if(instrument) {
-						
-						var keysArray = [];
-						
-						for(var i=0; i < instruments[instrument].numOfKeys; i++) {
-							keysArray.push('note ' + i);
-						}
-						
-						$scope.keys = keysArray;
-      		}
+      	$scope.instrument;
+      	$scope.keys;
+      	$scope.instrumentName;
 
+      	$attrs.$observe('instrument', function(instrumentName) {
+      		if(instrumentName) {
+      			$scope.instrumentName = instrumentName;
+      			$scope.instrument = instrumentsCollection[instrumentName];
+						initKeys($scope.instrument);
+						initSamples($scope.instrument);
+      		}
       	});
+
+      	function initSamples(instrument) {
+      		var sample;      		
+      		for(var i = 0; i < instrument.samples.length; i++) {
+      			sample = instrument.samples[i];
+      			$scope.keys[sample.key]['sample'] = sample;
+      		}
+      	}
+
+      	function initKeys(instrument) {
+      		var keysArray = [];
+					for(var i=0; i < instrument.numOfKeys; i++) {
+						keysArray.push({number: i});
+					}
+					$scope.keys = keysArray;
+      	}
 
       }
     }
@@ -40,15 +54,14 @@ angular.module('audioFiddle.directives', []).
   	return {
   		restrict: 'EA',
   		replace: false,
-  		transclude: false,
   		link: function($scope, $element, $attrs) {
 
-  			$attrs.$observe('sample', function(sample) {
-  				$scope.sample = sample;
-  			});
-
-  			$scope.playSample = function() {
-  				alert($scope.sample);
+  			$scope.playSample = function(sample) {
+  				if(sample) {
+						console.log(sample.url);
+  				} else {
+  					console.log('no sample set');
+  				}
   			};
 
   		}
