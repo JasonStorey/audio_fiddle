@@ -5,8 +5,8 @@
 
 // Demonstrate how to register services
 // In this case it is a simple value service.
-angular.module('audioFiddle.services', []).
-  value('version', '0.1')
+angular.module('audioFiddle.services', [])
+	.value('version', '0.1')
   .value('instruments', {
 		keyboard: {
 			numOfKeys: 127,
@@ -68,4 +68,12 @@ angular.module('audioFiddle.services', []).
 				}
 			]
 		}
-  });
+  })
+  .factory('MIDI', ['$window', function($window) {
+  	var MIDI = $window.MIDI;
+  	
+  	MIDI.unloadPlugin = function(plugin) {
+  		console.log('unload ' + plugin);
+  	};
+  	return MIDI;
+  }]);
