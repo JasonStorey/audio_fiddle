@@ -73,7 +73,6 @@ angular.module('audioFiddle.directives', []).
 
   			$attrs.$observe('sample', function(sample) {
   				$scope.sample = sample;
-
   			});
 
   			$scope.playSample = function() {

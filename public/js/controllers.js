@@ -4,7 +4,7 @@
 
 angular.module('audioFiddle.controllers', []).
   controller('MyCtrl1', ['$scope', '$timeout', function($scope, $timeout) {
-  	$scope.instrumentName = "keyboard";
+  	//$scope.instrumentName = "keyboard";
   	$timeout(function() {
   		$scope.instrumentName = "drumkit";
   	}, 500);

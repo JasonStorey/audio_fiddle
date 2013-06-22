@@ -70,10 +70,22 @@ angular.module('audioFiddle.services', [])
 		}
   })
   .factory('MIDI', ['$window', function($window) {
-  	var MIDI = $window.MIDI;
   	
-  	MIDI.unloadPlugin = function(plugin) {
-  		console.log('unload ' + plugin);
+  	var MIDI = $window.MIDI;
+  	var _loadPlugin = $window.MIDI.loadPlugin;
+
+  	MIDI.loadPlugin = function(config) {
+			console.log(config);
+			_loadPlugin(config);
   	};
+
+		MIDI.unloadPlugin = function (plugin) {
+	  		var audioElems = document.getElementsByTagName('audio');
+	  		angular.forEach(audioElems, function(value){
+	  			angular.element(value).remove();
+	  		});
+  	};
+
   	return MIDI;
+
   }]);
