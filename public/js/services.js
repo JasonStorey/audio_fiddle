@@ -9,68 +9,77 @@ angular.module('audioFiddle.services', [])
 	.value('version', '0.1')
   .value('instruments', {
 		keyboard: {
-			numOfKeys: 127,
+			numOfTriggers: 127,
 			samples: [
 				{
 					name: 'A01',
 					url: 'sample path',
-					key: 0
+					trigger: 0,
+					note: 50
 				},
 				{
 					name: 'A02',
 					url: 'sample path',
-					key: 1
+					trigger: 1,
+					note: 51
 				},
 				{
 					name: 'A03',
 					url: 'sample path',
-					key: 2
+					trigger: 2,
+					note: 52
 				},
 				{
 					name: 'A04',
 					url: 'sample path',
-					key: 3
+					trigger: 3,
+					note: 53
 				},
 				{
 					name: 'A05',
 					url: 'sample path',
-					key: 4
+					trigger: 4,
+					note: 54
 				}
 			]
 		},
 		drumkit:{
-			numOfKeys: 12,
+			numOfTriggers: 12,
 			samples: [
 				{
 					name: 'Kick',
 					url: 'sample path',
-					key: 0
+					trigger: 0,
+					note: 50
 				},
 				{
 					name: 'Snare',
 					url: 'sample path',
-					key: 1
+					trigger: 1,
+					note: 51
 				},
 				{
 					name: 'HH',
 					url: 'sample path',
-					key: 2
+					trigger: 2,
+					note: 52
 				},
 				{
 					name: 'Open HH',
 					url: 'sample path',
-					key: 3
+					trigger: 3,
+					note: 53
 				},
 				{
 					name: 'Crash',
 					url: 'sample path',
-					key: 4
+					trigger: 4,
+					note: 54
 				}
 			]
 		}
   })
   .factory('MIDI', ['$window', function($window) {
-  	
   	var MIDI = $window.MIDI;
   	var _loadPlugin = $window.MIDI.loadPlugin;
 

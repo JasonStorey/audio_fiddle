@@ -19,7 +19,7 @@ angular.module('audioFiddle.directives', []).
       link: function($scope, $element, $attrs) {
 
       	$scope.instrument;
-      	$scope.keys;
+      	$scope.triggers;
       	$scope.instrumentName;
       	$scope.soundfontLoaded = false;
 				$scope.$on('$destroy', function() {
@@ -30,7 +30,7 @@ angular.module('audioFiddle.directives', []).
       		if(instrumentName) {
       			$scope.instrumentName = instrumentName;
       			$scope.instrument = instrumentsCollection[instrumentName];
-						initKeys($scope.instrument);
+						initTriggers($scope.instrument);
 						loadSoundfont($scope.instrument);
 						initSamples($scope.instrument);
       		}
@@ -55,16 +55,16 @@ angular.module('audioFiddle.directives', []).
       		var sample;
       		for(var i = 0; i < instrument.samples.length; i++) {
       			sample = instrument.samples[i];
-      			$scope.keys[sample.key]['sample'] = sample;
+      			$scope.triggers[sample.trigger]['sample'] = sample;
       		}
       	}
 
-      	function initKeys(instrument) {
-      		var keysArray = [];
-					for(var i=0; i < instrument.numOfKeys; i++) {
-						keysArray.push({number: i});
+      	function initTriggers(instrument) {
+      		var triggersArray = [];
+					for(var i=0; i < instrument.numOfTriggers; i++) {
+						triggersArray.push({number: i});
 					}
-					$scope.keys = keysArray;
+					$scope.triggers = triggersArray;
       	}
 
       }
@@ -76,14 +76,13 @@ angular.module('audioFiddle.directives', []).
   		replace: false,
   		link: function($scope, $element, $attrs) {
 
-  			$attrs.$observe('sample', function(sample) {
-  				$scope.sample = sample;
-  			});
-
   			$scope.playSample = function() {
-  				if($scope.sample) {
+
+  				if($scope.trigger.sample) {
+						console.log($scope.trigger.sample)
+
 						var delay = 0; // play one note every quarter second
-						var note = 50; // the MIDI note
+						var note = $scope.trigger.sample.note; // the MIDI note
 						var velocity = 127; // how hard the note hits
 						// play the note
 						MIDI.setVolume(0, 127);
