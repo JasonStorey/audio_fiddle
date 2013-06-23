@@ -22,6 +22,9 @@ angular.module('audioFiddle.directives', []).
       	$scope.keys;
       	$scope.instrumentName;
       	$scope.soundfontLoaded = false;
+				$scope.$on('$destroy', function() {
+					unloadAllSamples();
+				});
 
       	$attrs.$observe('instrument', function(instrumentName) {
       		if(instrumentName) {
@@ -39,11 +42,13 @@ angular.module('audioFiddle.directives', []).
 						instrument: "acoustic_grand_piano",
 						callback: function() {
 							$scope.soundfontLoaded = true;
-							$scope.$on('$destroy', function() {
-								MIDI.unloadPlugin("acoustic_grand_piano");
-							});
 						}
 					});
+      	}
+
+      	function unloadAllSamples() {
+					MIDI.unloadAllSamples();
+					$scope.soundfontLoaded = false;
       	}
 
       	function initSamples(instrument) {

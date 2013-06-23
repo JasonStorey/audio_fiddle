@@ -79,8 +79,8 @@ angular.module('audioFiddle.services', [])
 			_loadPlugin(config);
   	};
 
-		MIDI.unloadPlugin = function (plugin) {
-	  		var audioElems = document.getElementsByTagName('audio');
+		MIDI.unloadAllSamples = function () {
+	  		var audioElems = document.querySelectorAll('audio');
 	  		angular.forEach(audioElems, function(value){
 	  			angular.element(value).remove();
 	  		});
