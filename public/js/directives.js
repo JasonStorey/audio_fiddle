@@ -9,16 +9,16 @@ angular.module('audioFiddle.directives', []).
       elm.text(version);
     };
   }])
-  .directive('musicalInterface', ['instruments', 'MIDI', function(instrumentsCollection, MIDI) {
+  .directive('musicalInterface', ['interfaces', 'MIDI', function(interfaces, MIDI) {
   	return {
       restrict: 'E',
       replace: false, // Angular bug... 'replace: true' breaks $observe on interpolated $attrs
       transclude: true,
-      scope: { instrument:'@instrument' },
+      scope: { interfaceStyle:'@interfaceStyle' },
       templateUrl: 'templates/musical_interface.html',
       link: function($scope, $element, $attrs) {
 
-      	$scope.instrument;
+      	$scope.interfaceStyle;
       	$scope.triggers;
       	$scope.instrumentName;
       	$scope.soundfontLoaded = false;
@@ -26,21 +26,22 @@ angular.module('audioFiddle.directives', []).
 					unloadAllSamples();
 				});
 
-      	$attrs.$observe('instrument', function(instrumentName) {
-      		if(instrumentName) {
-      			$scope.instrumentName = instrumentName;
-      			$scope.instrument = instrumentsCollection[instrumentName];
-						initTriggers($scope.instrument);
-						loadSoundfont($scope.instrument);
-						initSamples($scope.instrument);
+      	$attrs.$observe('interfaceStyle', function(interfaceStyle) {
+      		if(interfaceStyle) {
+      			$scope.interfaceStyle = interfaceStyle;
+      			$scope.musicalInterface = interfaces[interfaceStyle];
+						initTriggers($scope.musicalInterface);
+						loadSoundfont($scope.musicalInterface);
+						initSamples($scope.musicalInterface);
       		}
       	});
 
-      	function loadSoundfont(instrument) {
+      	function loadSoundfont(musicalInterface) {
       		MIDI.loadPlugin({
 						soundfontUrl: "soundfonts/",
-						instrument: "acoustic_grand_piano",
+						instrument: musicalInterface.instrument,
 						callback: function() {
+							MIDI.programChange(0, musicalInterface.program)
 							$scope.soundfontLoaded = true;
 						}
 					});
@@ -51,17 +52,17 @@ angular.module('audioFiddle.directives', []).
 					$scope.soundfontLoaded = false;
       	}
 
-      	function initSamples(instrument) {
+      	function initSamples(musicalInterface) {
       		var sample;
-      		for(var i = 0; i < instrument.samples.length; i++) {
-      			sample = instrument.samples[i];
+      		for(var i = 0; i < musicalInterface.samples.length; i++) {
+      			sample = musicalInterface.samples[i];
       			$scope.triggers[sample.trigger]['sample'] = sample;
       		}
       	}
 
-      	function initTriggers(instrument) {
+      	function initTriggers(musicalInterface) {
       		var triggersArray = [];
-					for(var i=0; i < instrument.numOfTriggers; i++) {
+					for(var i=0; i < musicalInterface.numOfTriggers; i++) {
 						triggersArray.push({number: i});
 					}
 					$scope.triggers = triggersArray;
@@ -80,7 +81,6 @@ angular.module('audioFiddle.directives', []).
 
   				if($scope.trigger.sample) {
 						console.log($scope.trigger.sample)
-
 						var delay = 0; // play one note every quarter second
 						var note = $scope.trigger.sample.note; // the MIDI note
 						var velocity = 127; // how hard the note hits

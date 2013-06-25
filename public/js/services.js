@@ -7,36 +7,38 @@
 // In this case it is a simple value service.
 angular.module('audioFiddle.services', [])
 	.value('version', '0.1')
-  .value('instruments', {
+  .value('interfaces', {
 		keyboard: {
+			instrument: 'acoustic_grand_piano',
+			program: 0,
 			numOfTriggers: 127,
 			samples: [
 				{
-					name: 'A01',
+					name: 'A0',
 					url: 'sample path',
 					trigger: 0,
 					note: 50
 				},
 				{
-					name: 'A02',
+					name: 'B0',
 					url: 'sample path',
 					trigger: 1,
 					note: 51
 				},
 				{
-					name: 'A03',
+					name: 'C0',
 					url: 'sample path',
 					trigger: 2,
 					note: 52
 				},
 				{
-					name: 'A04',
+					name: 'D0',
 					url: 'sample path',
 					trigger: 3,
 					note: 53
 				},
 				{
-					name: 'A05',
+					name: 'E0',
 					url: 'sample path',
 					trigger: 4,
 					note: 54
@@ -44,6 +46,8 @@ angular.module('audioFiddle.services', [])
 			]
 		},
 		drumkit:{
+			instrument: 'synth_drum',
+			program: 118,
 			numOfTriggers: 12,
 			samples: [
 				{
